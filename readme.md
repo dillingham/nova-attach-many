@@ -35,6 +35,9 @@ You can set min, max, size or custom rule objects
 ->rules('min:5', 'max:10', 'size:10', new CustomRule)
 ```
 
+![validation](https://user-images.githubusercontent.com/29180903/52160802-9ee9ac80-2689-11e9-9657-80e3c0d83b27.png)
+
+
 ### Options
 
 Here are a few customization options
