@@ -4,11 +4,14 @@ namespace NovaAttachMany;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Authorizable;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\ResourceRelationshipGuesser;
 
 class AttachMany extends Field
 {
+    use Authorizable;
+
     public $height = '300px';
 
     public $fullWidth = false;
@@ -52,18 +55,31 @@ class AttachMany extends Field
     {
         parent::resolve($resource, $attribute);
 
+        $request = resolve(NovaRequest::class);
+
+        $query = $this->resourceClass::newModel();
+
+        $parentResource = $request->findResourceOrFail();
+
+        $resources = $this->resourceClass::relatableQuery($request, $query)->get()
+            ->mapInto($this->resourceClass)
+            ->filter(function ($resource) use ($request, $parentResource) {
+                return $parentResource->authorizedToAttach($request, $resource->resource);
+            })
+            ->map(function($resource) {
+                return [
+                    'display' => $resource->title(),
+                    'value' => $resource->getKey(),
+            ];
+        })->values();
+
         $this->withMeta([
             'height' => $this->height,
             'fullWidth' => $this->fullWidth,
             'showCounts' => $this->showCounts,
             'showToolbar' => $this->showToolbar,
             'value' => $resource->{$this->manyToManyRelationship}->pluck('id')->toArray(),
-            'resources' => $this->resourceClass::newModel()->get()->map(function($model) {
-                return [
-                    'id' => $model->id,
-                    'display' => (new $this->resourceClass($model))->title(),
-                ];
-            }),
+            'resources' => $resources,
         ]);
     }
 
