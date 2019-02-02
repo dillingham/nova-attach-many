@@ -5,7 +5,7 @@
 
 Nova package that enables attaching relationships easily
 
-![attach-many-larave-nova](https://user-images.githubusercontent.com/29180903/52160698-2d5d2e80-2688-11e9-9e4e-9ce460cc370a.png)
+[attach-many](https://user-images.githubusercontent.com/29180903/52160651-be7fd580-2687-11e9-9ece-27332b3ce6bf.png)
 
 ### Installation
 
