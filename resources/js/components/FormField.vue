@@ -12,9 +12,9 @@
                     </div>
                 </div>
                 <div class="border-t-0 border border-40 relative overflow-auto" :style="{ height: field.height }">
-                    <div v-for="resource in resources" :key="resource.id" @click="toggle($event, resource.id)" class="flex py-3 cursor-pointer select-none hover:bg-30">
+                    <div v-for="resource in resources" :key="resource.value" @click="toggle($event, resource.value)" class="flex py-3 cursor-pointer select-none hover:bg-30">
                         <div class="w-16 flex justify-center">
-                            <fake-checkbox :checked="selected.includes(resource.id)" />
+                            <fake-checkbox :checked="selected.includes(resource.value)" />
                         </div>
                         <span>{{ resource.display }}</span>
                     </div>
@@ -81,10 +81,15 @@ export default {
                 return;
             }
 
+            if(this.resources.length == 1 && this.selected == 1)
+            {
+                this.selected = [];
+            }
+
             // add all resources
             if(! this.search && this.selectingAll) {
                 this.resources.forEach(resource => {
-                    selected.push(resource.id)
+                    selected.push(resource.value)
                 })
             }
 
@@ -96,7 +101,7 @@ export default {
             // append searched resources
             if(this.search && this.selectingAll) {
                 this.resources.forEach(resource => {
-                    selected.push(resource.id)
+                    selected.push(resource.value)
                 })
             }
 
@@ -106,7 +111,7 @@ export default {
                 let exludingIds = [];
 
                 this.resources.forEach(resource => {
-                    exludingIds.push(resource.id);
+                    exludingIds.push(resource.value);
                 })
 
                 selected = selected.filter(id => exludingIds.includes(id) == false);
@@ -128,8 +133,8 @@ export default {
             let visibleAndSelected = [];
 
             this.resources.forEach(resource => {
-                if(this.selected.includes(resource.id)) {
-                    visibleAndSelected.push(resource.id);
+                if(this.selected.includes(resource.value)) {
+                    visibleAndSelected.push(resource.value);
                 }
             })
 
@@ -141,6 +146,7 @@ export default {
             if(this.search == null) {
                 return this.field.resources;
             }
+
             return this.field.resources.filter((resource) => {
                 return resource.display.toLowerCase().includes(this.search.toLowerCase())
             });
