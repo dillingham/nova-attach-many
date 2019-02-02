@@ -5,11 +5,15 @@
 
 Nova package that provides a way to attach relationships easily
 
+![attach-many](https://user-images.githubusercontent.com/29180903/52160651-be7fd580-2687-11e9-9ece-27332b3ce6bf.png)
+
 ### Installation
 
 ```bash
 composer require dillingham/nova-attach-many
 ```
+
+### Usage
 
 ```php
 use NovaAttachMany\AttachMany;
