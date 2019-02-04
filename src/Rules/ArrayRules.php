@@ -1,6 +1,6 @@
 <?php
 
-namespace NovaAttachMany;
+namespace NovaAttachMany\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
