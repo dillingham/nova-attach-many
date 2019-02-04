@@ -57,6 +57,13 @@ This field also respects policies: ie Role / Permission
 - RolePolicy: attachPermission($user, $role, $permission)
 - PermissionPolicy: viewAny($user)
 
+### TODO
+
+[] Add check count
+[] Add pagination for many resources
+[] Add scroll to bottom, append results
+[] Add search, append results
+
 ### Thanks
 
 [dkulyk](https://github.com/dkulyk) helped with authorization
