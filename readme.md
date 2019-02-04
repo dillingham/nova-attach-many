@@ -59,10 +59,11 @@ This field also respects policies: ie Role / Permission
 
 ### TODO
 
-[] Add check count
 [] Add pagination for many resources
-[] Add scroll to bottom, append results
-[] Add search, append results
+
+[] Add scroll to bottom, append paginated results
+
+[] Add search, append paginated results
 
 ### Thanks
 
