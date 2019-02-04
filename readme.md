@@ -56,3 +56,7 @@ This field also respects policies: ie Role / Permission
 - RolePolicy: attachAnyPermission($user, $role)
 - RolePolicy: attachPermission($user, $role, $permission)
 - PermissionPolicy: viewAny($user)
+
+### Thanks
+
+[dkulyk](https://github.com/dkulyk) helped with authorization
