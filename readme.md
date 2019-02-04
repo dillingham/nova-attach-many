@@ -47,11 +47,12 @@ Here are a few customization options
 - `->height('500px')` Set custom height
 - `->fullWidth()` Set to full width
 
-### Search & Select
+### Relatable
+The attachable resources will be filtered by relatableQuery()
+So you can filter which resources are able to be attached
 
-The search has some interesting logic
-
-- search then select a group of items by toggling "select all"
-- search then deselect a group of items by toggling "select all"
-- select all, search and then deselect a group of items
-- deselect all, search and then select a group of items
+### Authorization
+This field also respects policies: ie Role / Permission
+- RolePolicy: attachAnyPermission($user, $role)
+- RolePolicy: attachPermission($user, $role, $permission)
+- PermissionPolicy: viewAny($user)

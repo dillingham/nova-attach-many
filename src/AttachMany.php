@@ -22,6 +22,8 @@ class AttachMany extends Field
 
     public $showOnIndex = false;
 
+    public $showOnDetail = false;
+
     public $component = 'nova-attach-many';
 
     public function __construct($name, $attribute = null, $resource = null)
@@ -30,14 +32,19 @@ class AttachMany extends Field
 
         $resource = $resource ?? ResourceRelationshipGuesser::guessResource($name);
 
+        $this->resource = $resource;
+
         $this->resourceClass = $resource;
         $this->resourceName = $resource::uriKey();
         $this->manyToManyRelationship = $this->attribute;
 
         $this->fillUsing(function($request, $model, $attribute, $requestAttribute){
-            $model->$attribute()->sync(
-                json_decode($request->$attribute, true)
-            );
+            $model::saved(function($model) use($attribute, $request) {
+                $model->$attribute()->sync(
+                    json_decode($request->$attribute, true)
+                );
+            });
+
             unset($request->$attribute);
         });
     }
@@ -53,41 +60,19 @@ class AttachMany extends Field
 
     public function resolve($resource, $attribute = null)
     {
-        parent::resolve($resource, $attribute);
-
-        $request = resolve(NovaRequest::class);
-
-        $query = $this->resourceClass::newModel();
-
-        $parentResource = $request->findResourceOrFail();
-
-        $resources = $this->resourceClass::relatableQuery($request, $query)->get()
-            ->mapInto($this->resourceClass)
-            ->filter(function ($resource) use ($request, $parentResource) {
-                return $parentResource->authorizedToAttach($request, $resource->resource);
-            })
-            ->map(function($resource) {
-                return [
-                    'display' => $resource->title(),
-                    'value' => $resource->getKey(),
-            ];
-        })->values();
-
         $this->withMeta([
             'height' => $this->height,
             'fullWidth' => $this->fullWidth,
             'showCounts' => $this->showCounts,
-            'showToolbar' => $this->showToolbar,
-            'value' => $resource->{$this->manyToManyRelationship}->pluck('id')->toArray(),
-            'resources' => $resources,
+            'showToolbar' => $this->showToolbar
         ]);
     }
 
     public function authorize(Request $request)
     {
-        return call_user_func(
-            [$this->resourceClass, 'authorizedToViewAny'], $request
-        ) && parent::authorize($request);
+        return call_user_func([ $this->resourceClass, 'authorizedToViewAny'], $request)
+        && $request->newResource()->authorizedToAttachAny($request, $this->resourceClass::newModel())
+        && parent::authorize($request);
     }
 
     public function height($height)

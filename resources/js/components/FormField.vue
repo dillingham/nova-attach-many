@@ -27,7 +27,7 @@
 
             <div class="help-text mt-3">
                 <span v-if="field.showCounts" class="pr-2">
-                    {{ selected.length  }} / {{ field.resources.length }}
+                    {{ selected.length  }} / {{ available.length }}
                 </span>
                 <span v-if="field.helpText">
                     {{ field.helpText }}
@@ -50,13 +50,28 @@ export default {
         return {
             search: null,
             selected: [],
-            selectingAll: false
+            selectingAll: false,
+            available: []
         }
     },
     methods: {
         setInitialValue() {
-            this.selected = this.field.value;
-            this.selectingAll = this.selected.length == this.field.resources.length;
+
+            let baseUrl = '/nova-vendor/nova-attach-many/';
+
+            if(this.resourceId) {
+                Nova.request(baseUrl + this.resourceName + '/' + this.resourceId + '/attachable/' + this.field.attribute)
+                    .then((data) => {
+                        this.selected = data.data.selected || [];
+                        this.available = data.data.available || [];
+                    });
+            }
+            else {
+                Nova.request(baseUrl + this.resourceName + '/attachable/' + this.field.attribute)
+                    .then((data) => {
+                        this.available = data.data.available || [];
+                    });
+            }
         },
 
         fill(formData) {
@@ -144,10 +159,10 @@ export default {
     computed: {
         resources: function() {
             if(this.search == null) {
-                return this.field.resources;
+                return this.available;
             }
 
-            return this.field.resources.filter((resource) => {
+            return this.available.filter((resource) => {
                 return resource.display.toLowerCase().includes(this.search.toLowerCase())
             });
         },
