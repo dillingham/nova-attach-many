@@ -61,10 +61,6 @@ This field also respects policies: ie Role / Permission
 
 [] Add pagination for many resources
 
-[] Add scroll to bottom, append paginated results
-
-[] Add search, append paginated results
-
 ### Thanks
 
 [dkulyk](https://github.com/dkulyk) helped with authorization
