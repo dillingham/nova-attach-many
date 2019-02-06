@@ -3,7 +3,7 @@
 [![Latest Version on Github](https://img.shields.io/github/release/dillingham/nova-attach-many.svg?style=flat-square)](https://packagist.org/packages/dillingham/nova-attach-many)
 [![Total Downloads](https://img.shields.io/packagist/dt/dillingham/nova-attach-many.svg?style=flat-square)](https://packagist.org/packages/dillingham/nova-attach-many)
 
-Belongs To Many create / edit form component for Nova, enables attaching relationships easily with validation.
+Belongs To Many create & edit form UI for Nova, enables attaching relationships easily with validation.
 
 ![attach-many](https://user-images.githubusercontent.com/29180903/52160651-be7fd580-2687-11e9-9ece-27332b3ce6bf.png)
 
@@ -59,7 +59,7 @@ This field also respects policies: ie Role / Permission
 
 ### TODO
 
-[] Add pagination for many resources
+[] Add pagination for large amount of resources
 
 ### Thanks
 
