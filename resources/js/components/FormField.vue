@@ -103,6 +103,7 @@ export default {
 
             // add all resources
             if(! this.search && this.selectingAll) {
+                selected = [];
                 this.resources.forEach(resource => {
                     selected.push(resource.value)
                 })
