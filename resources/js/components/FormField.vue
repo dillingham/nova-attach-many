@@ -2,7 +2,7 @@
     <default-field :field="field" :full-width-content="field.fullWidth" :show-help-text="false">
         <template slot="field" :class="{'border-danger border': hasErrors}">
             <div :class="{'border-danger border': hasErrors}">
-                <div v-if="field.showToolbar" class="flex border border-40">
+                <div v-if="field.showToolbar && !this.preview" class="flex border-b-0 border border-40">
                     <div @click="selectAll" class="w-16 text-center flex justify-center items-center">
                         <fake-checkbox :checked="selectingAll" class="cursor-pointer"></fake-checkbox>
                     </div>
@@ -11,7 +11,7 @@
                         <span v-if="search" @click="clearSearch" class="pin-r font-sans font-bolder absolute pr-8 cursor-pointer text-black hover:text-80">x</span>
                     </div>
                 </div>
-                <div class="border-t-0 border border-40 relative overflow-auto" :style="{ height: field.height }">
+                <div class="border border-40 relative overflow-auto" :style="{ height: field.height }">
                     <div v-for="resource in resources" :key="resource.value" @click="toggle($event, resource.value)" class="flex py-3 cursor-pointer select-none hover:bg-30">
                         <div class="w-16 flex justify-center">
                             <fake-checkbox :checked="selected.includes(resource.value)" />
@@ -29,8 +29,12 @@
                 <span v-if="field.showCounts" class="pr-2">
                     {{ selected.length  }} / {{ available.length }}
                 </span>
-                <span v-if="field.helpText">
+                <span v-if="field.helpText" class="pr-2">
                     {{ field.helpText }}
+                </span>
+                <span v-if="field.showPreview" @click="togglePreview($event)" class="flex cursor-pointer select-none float-right">
+                    <span class="pr-2">Preview</span>
+                    <fake-checkbox class="flex" :checked="preview" />
                 </span>
             </div>
 
@@ -51,7 +55,8 @@ export default {
             search: null,
             selected: [],
             selectingAll: false,
-            available: []
+            available: [],
+            preview: false
         }
     },
     methods: {
@@ -155,10 +160,19 @@ export default {
             })
 
             this.selectingAll = visibleAndSelected.length == this.resources.length;
+        },
+        togglePreview(event){
+            this.preview = ! this.preview;
         }
     },
     computed: {
         resources: function() {
+            if(this.preview) {
+                return this.available.filter((resource) => {
+                    return this.selected.includes(resource.value)
+                });
+            }
+
             if(this.search == null) {
                 return this.available;
             }
