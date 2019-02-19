@@ -2,7 +2,10 @@
     <default-field :field="field" :full-width-content="field.fullWidth" :show-help-text="false">
         <template slot="field" :class="{'border-danger border': hasErrors}">
             <div :class="{'border-danger border': hasErrors}">
-                <div v-if="field.showToolbar && !this.preview" class="flex border-b-0 border border-40">
+                <div v-if="field.showToolbar" class="flex border-b-0 border border-40 relative">
+                    <div v-if="preview" class="flex justify-center items-center absolute pin z-10 bg-white">
+                        <h3>{{ __('Selected Items') }} ({{ selected.length  }})</h3>
+                    </div>
                     <div @click="selectAll" class="w-16 text-center flex justify-center items-center">
                         <fake-checkbox :checked="selectingAll" class="cursor-pointer"></fake-checkbox>
                     </div>
@@ -33,7 +36,7 @@
                     {{ field.helpText }}
                 </span>
                 <span v-if="field.showPreview" @click="togglePreview($event)" class="flex cursor-pointer select-none float-right">
-                    <span class="pr-2">Preview</span>
+                    <span class="pr-2">{{ __('Preview') }}</span>
                     <fake-checkbox class="flex" :checked="preview" />
                 </span>
             </div>
@@ -147,7 +150,7 @@ export default {
         },
         checkIfSelectAllIsActive() {
 
-            if(this.resources.length === 0) {
+            if(this.resources.length === 0 || this.preview) {
                 this.selectingAll = false; return;
             }
 
