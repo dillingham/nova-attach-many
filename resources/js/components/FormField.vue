@@ -15,7 +15,10 @@
                     </div>
                 </div>
                 <div class="border border-40 relative overflow-auto" :style="{ height: field.height }">
-                    <div v-for="resource in resources" :key="resource.value" @click="toggle($event, resource.value)" class="flex py-3 cursor-pointer select-none hover:bg-30">
+                    <div v-if="loading" class="flex items-center h-full">
+                        <h3 class="text-center w-full text-80">{{ __('Loading..') }}</h3>
+                    </div>
+                    <div v-else v-for="resource in resources" :key="resource.value" @click="toggle($event, resource.value)" class="flex py-3 cursor-pointer select-none hover:bg-30">
                         <div class="w-16 flex justify-center">
                             <fake-checkbox :checked="selected.includes(resource.value)" />
                         </div>
@@ -28,7 +31,7 @@
                 {{ firstError }}
             </help-text>
 
-            <div class="help-text mt-3">
+            <div class="help-text mt-3" :class="{ 'invisible': loading }">
                 <span v-if="field.showCounts" class="pr-2">
                     {{ selected.length  }} / {{ available.length }}
                 </span>
@@ -59,7 +62,8 @@ export default {
             selected: [],
             selectingAll: false,
             available: [],
-            preview: false
+            preview: false,
+            loading: true,
         }
     },
     methods: {
@@ -72,14 +76,17 @@ export default {
                     .then((data) => {
                         this.selected = data.data.selected || [];
                         this.available = data.data.available || [];
+                        this.loading = false;
                     });
             }
             else {
                 Nova.request(baseUrl + this.resourceName + '/attachable/' + this.field.attribute)
                     .then((data) => {
                         this.available = data.data.available || [];
+                        this.loading = false;
                     });
             }
+
         },
 
         fill(formData) {
