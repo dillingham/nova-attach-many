@@ -21,6 +21,8 @@ class AttachMany extends Field
 
     public $showCounts = false;
 
+    public $showPreview = false;
+
     public $showOnIndex = false;
 
     public $showOnDetail = false;
@@ -65,6 +67,7 @@ class AttachMany extends Field
             'height' => $this->height,
             'fullWidth' => $this->fullWidth,
             'showCounts' => $this->showCounts,
+            'showPreview' => $this->showPreview,
             'showToolbar' => $this->showToolbar
         ]);
     }
@@ -104,6 +107,13 @@ class AttachMany extends Field
     public function showCounts($showCounts=true)
     {
         $this->showCounts = $showCounts;
+
+        return $this;
+    }
+
+    public function showPreview($showPreview=true)
+    {
+        $this->showPreview = $showPreview;
 
         return $this;
     }

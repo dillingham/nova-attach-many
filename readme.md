@@ -43,6 +43,7 @@ You can set min, max, size or custom rule objects
 Here are a few customization options
 
 - `->showCounts()` Shows "selected/total"
+- `->showPreview()` Shows only selected
 - `->hideToolbar()` Removes search & select all
 - `->height('500px')` Set custom height
 - `->fullWidth()` Set to full width
