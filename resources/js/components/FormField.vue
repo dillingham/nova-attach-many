@@ -15,8 +15,8 @@
                     </div>
                 </div>
                 <div class="border border-40 relative overflow-auto" :style="{ height: field.height }">
-                    <div v-if="loading" class="flex items-center h-full">
-                        <h3 class="text-center w-full text-80">{{ __('Loading..') }}</h3>
+                    <div v-if="loading" class="flex justify-center items-center absolute pin z-50 bg-white">
+                        <loader class="text-60" />
                     </div>
                     <div v-else v-for="resource in resources" :key="resource.value" @click="toggle($event, resource.value)" class="flex py-3 cursor-pointer select-none hover:bg-30">
                         <div class="w-16 flex justify-center">
