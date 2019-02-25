@@ -47,6 +47,7 @@ Here are a few customization options
 - `->hideToolbar()` Removes search & select all
 - `->height('500px')` Set custom height
 - `->fullWidth()` Set to full width
+- `->help('My <strong>cool</strong> help text')` - Set the help text - appears under the selection indicator
 
 ### Relatable
 The attachable resources will be filtered by relatableQuery()
