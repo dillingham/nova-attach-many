@@ -31,11 +31,11 @@
                 {{ firstError }}
             </help-text>
 
-            <div class="help-text mt-3 w-full" :class="{ 'invisible': loading }">
-                <span v-if="field.showCounts" class="pr-2 float-left border-60" :class="{ 'border-r mr-2': field.helpText }">
+            <div class="help-text mt-3 w-full flex" :class="{ 'invisible': loading }">
+                <span v-if="field.showCounts" class="pr-2 float-left border-60 whitespace-no-wrap" :class="{ 'border-r mr-2': field.helpText }">
                     {{ selected.length  }} / {{ available.length }}
                 </span>
-                <span class="float-left">
+                <span class="float-left border-60" :class="{'border-r mr-2': field.showPreview }">
                     <help-text class="help-text" v-if="field.helpText"> {{ field.helpText }} </help-text>
                 </span>
 
