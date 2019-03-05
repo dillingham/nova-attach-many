@@ -35,14 +35,14 @@
                 <span v-if="field.showCounts" class="pr-2">
                     {{ selected.length  }} / {{ available.length }}
                 </span>
-                <span v-if="field.helpText" class="pr-2">
-                    {{ field.helpText }}
-                </span>
+
                 <span v-if="field.showPreview" @click="togglePreview($event)" class="flex cursor-pointer select-none float-right">
                     <span class="pr-2">{{ __('Preview') }}</span>
                     <fake-checkbox class="flex" :checked="preview" />
                 </span>
             </div>
+
+            <help-text class="help-text mt-2" v-if="field.helpText"> {{ field.helpText }} </help-text>
 
         </template>
     </default-field>
