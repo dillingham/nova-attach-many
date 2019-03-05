@@ -10,7 +10,7 @@
                         <fake-checkbox :checked="selectingAll" class="cursor-pointer"></fake-checkbox>
                     </div>
                     <div class="flex-1 flex items-center relative">
-                        <input v-model="search" type="text" placeholder="Search" class="form-control form-input form-input-bordered w-full ml-0 m-4">
+                        <input v-model="search" type="text" placeholder="{{ __('Search') }}" class="form-control form-input form-input-bordered w-full ml-0 m-4">
                         <span v-if="search" @click="clearSearch" class="pin-r font-sans font-bolder absolute pr-8 cursor-pointer text-black hover:text-80">x</span>
                     </div>
                 </div>
