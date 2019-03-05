@@ -10,7 +10,7 @@
                         <fake-checkbox :checked="selectingAll" class="cursor-pointer"></fake-checkbox>
                     </div>
                     <div class="flex-1 flex items-center relative">
-                        <input v-model="search" type="text" placeholder="{{ __('Search') }}" class="form-control form-input form-input-bordered w-full ml-0 m-4">
+                        <input v-model="search" type="text" :placeholder="__('Search')" class="form-control form-input form-input-bordered w-full ml-0 m-4">
                         <span v-if="search" @click="clearSearch" class="pin-r font-sans font-bolder absolute pr-8 cursor-pointer text-black hover:text-80">x</span>
                     </div>
                 </div>
@@ -31,9 +31,12 @@
                 {{ firstError }}
             </help-text>
 
-            <div class="help-text mt-3" :class="{ 'invisible': loading }">
-                <span v-if="field.showCounts" class="pr-2">
+            <div class="help-text mt-3 w-full" :class="{ 'invisible': loading }">
+                <span v-if="field.showCounts" class="pr-2 float-left border-60" :class="{ 'border-r mr-2': field.helpText }">
                     {{ selected.length  }} / {{ available.length }}
+                </span>
+                <span class="float-left">
+                    <help-text class="help-text" v-if="field.helpText"> {{ field.helpText }} </help-text>
                 </span>
 
                 <span v-if="field.showPreview" @click="togglePreview($event)" class="flex cursor-pointer select-none float-right">
@@ -41,8 +44,6 @@
                     <fake-checkbox class="flex" :checked="preview" />
                 </span>
             </div>
-
-            <help-text class="help-text mt-2" v-if="field.helpText"> {{ field.helpText }} </help-text>
 
         </template>
     </default-field>
