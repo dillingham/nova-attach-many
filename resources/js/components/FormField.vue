@@ -22,7 +22,7 @@
                         <div class="w-16 flex justify-center">
                             <fake-checkbox :checked="selected.includes(resource.value)" />
                         </div>
-                        <span>{{ resource.display }}</span>
+                        <span>{{ field.localizeResources ? __(resource.display) : resource.display }}</span>
                     </div>
                 </div>
             </div>

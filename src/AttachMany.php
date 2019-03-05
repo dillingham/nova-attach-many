@@ -26,6 +26,8 @@ class AttachMany extends Field
     public $showOnIndex = false;
 
     public $showOnDetail = false;
+	
+	public $localizeResources = false;
 
     public $component = 'nova-attach-many';
 
@@ -70,7 +72,8 @@ class AttachMany extends Field
             'fullWidth' => $this->fullWidth,
             'showCounts' => $this->showCounts,
             'showPreview' => $this->showPreview,
-            'showToolbar' => $this->showToolbar
+            'showToolbar' => $this->showToolbar,
+            'localizeResources' => $this->localizeResources
         ]);
     }
 
@@ -116,6 +119,13 @@ class AttachMany extends Field
     public function showPreview($showPreview=true)
     {
         $this->showPreview = $showPreview;
+
+        return $this;
+    }
+	
+	public function localizeResources($localizeResources=true)
+    {
+        $this->localizeResources = $localizeResources;
 
         return $this;
     }
