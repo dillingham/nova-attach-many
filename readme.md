@@ -49,6 +49,7 @@ Here are a few customization options
 - `->fullWidth()` Set to full width
 - `->help('<b>Tip:</b> help text')` Set the help text
 
+### All Options Demo
 <img src="https://user-images.githubusercontent.com/29180903/53781117-6978ee80-3ed5-11e9-8da4-d2f2408f1ffb.png" width="75%"/>
 
 ### Relatable
