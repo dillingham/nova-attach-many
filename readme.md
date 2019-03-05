@@ -35,7 +35,7 @@ You can set min, max, size or custom rule objects
 ->rules('min:5', 'max:10', 'size:10', new CustomRule)
 ```
 
-![validation](https://user-images.githubusercontent.com/29180903/52160802-9ee9ac80-2689-11e9-9657-80e3c0d83b27.png)
+<img src="https://user-images.githubusercontent.com/29180903/52160802-9ee9ac80-2689-11e9-9657-80e3c0d83b27.png" width="75%" />
 
 
 ### Options
@@ -47,7 +47,10 @@ Here are a few customization options
 - `->hideToolbar()` Removes search & select all
 - `->height('500px')` Set custom height
 - `->fullWidth()` Set to full width
-- `->help('My <strong>cool</strong> help text')` - Set the help text - appears under the selection indicator
+- `->help('<b>Tip:</b> help text')` Set the help text
+
+### All Options Demo
+<img src="https://user-images.githubusercontent.com/29180903/53781117-6978ee80-3ed5-11e9-8da4-d2f2408f1ffb.png" width="75%"/>
 
 ### Relatable
 The attachable resources will be filtered by relatableQuery()
