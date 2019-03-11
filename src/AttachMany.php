@@ -81,7 +81,7 @@ class AttachMany extends Field
         }
 
         if(! isset($request->resource)) {
-            return true;
+            return false;
         }
 
         return call_user_func([ $this->resourceClass, 'authorizedToViewAny'], $request)
