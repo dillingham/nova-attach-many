@@ -80,6 +80,10 @@ class AttachMany extends Field
             return true;
         }
 
+        if(! isset($request->resource)) {
+            return false;
+        }
+
         return call_user_func([ $this->resourceClass, 'authorizedToViewAny'], $request)
             && $request->newResource()->authorizedToAttachAny($request, $this->resourceClass::newModel())
             && parent::authorize($request);
