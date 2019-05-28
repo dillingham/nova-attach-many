@@ -32,6 +32,18 @@ class AttachController extends Controller
             ->where('component', 'nova-attach-many')
             ->where('attribute', $relationship)
             ->first();
+        
+        if (is_null($field)) {
+            $field = $resourceClass
+                ->availableFields($request)
+                ->where('component', 'nova-dependency-container')
+                ->map(function($component) {
+                    return $component->meta["fields"];
+                })->collapse()
+                ->where('component', 'nova-attach-many')
+                ->where('attribute', $relationship)
+                ->first();
+        }
 
         $query = $field->resourceClass::newModel();
 
