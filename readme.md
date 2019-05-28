@@ -1,3 +1,5 @@
+**NOTE** This is a fork of https://github.com/dillingham/nova-attach-many, but this package support Nova Dependency Container Package.
+
 # Nova Attach Many
 
 [![Latest Version on Github](https://img.shields.io/github/release/dillingham/nova-attach-many.svg?style=flat-square)](https://packagist.org/packages/dillingham/nova-attach-many)
