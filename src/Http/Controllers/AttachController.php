@@ -37,7 +37,7 @@ class AttachController extends Controller
             $field = $resourceClass
                 ->availableFields($request)
                 ->where('component', 'nova-dependency-container')
-                ->map( function($component) {
+                ->map(function ($component) {
                     return $component->meta["fields"];
                 })->collapse()
                 ->where('component', 'nova-attach-many')
