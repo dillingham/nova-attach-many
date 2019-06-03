@@ -2,7 +2,7 @@
 
 namespace NovaAttachMany\Http\Controllers;
 
-use Laravel\Nova\Resource;
+use Illuminate\Support\Str;
 use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
