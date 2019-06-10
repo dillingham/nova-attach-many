@@ -45,7 +45,7 @@ class ArrayRules implements Rule
      */
     public function message()
     {
-        return $this->message;
+        return !isset($this->message) ? null : is_array($this->message) ? $this->message[0] : $this->message;
     }
 
     public function messages($attribute)
