@@ -18,14 +18,20 @@ class AttachController extends Controller
     public function edit(NovaRequest $request, $parent, $parentId, $relationship)
     {
         return [
-            'selected' => $request->findResourceOrFail()->model()->{$relationship}->pluck('id'),
-            'available' => $this->getAvailableResources($request, $relationship),
+            'selected' => $this->getSelectedResources($request, $relationship),
+            'available' => [],
         ];
     }
 
-    public function getAvailableResources($request, $relationship)
+    public function getAvailableResources(NovaRequest $request, $relationship)
     {
         $resourceClass = $request->newResource();
+
+        $search = trim($request->query('search'));
+
+        if(empty($search) ) {
+            return;
+        }
 
         $field = $resourceClass
             ->availableFields($request)
@@ -37,6 +43,31 @@ class AttachController extends Controller
 
         return $field->resourceClass::relatableQuery($request, $query)->get()
             ->mapInto($field->resourceClass)
+            ->filter(function ($resource) use ($request, $field, $search) {
+                return $request->newResource()->authorizedToAttach($request, $resource->resource) && false !== mb_stripos($resource->title(), $search);
+            })->map(function($resource) {
+                return [
+                    'display' => $resource->title(),
+                    'value' => $resource->getKey(),
+                ];
+            })->sortBy('display')->slice(0, 10)->values();
+    }
+
+    public function getSelectedResources(NovaRequest $request, $relationship)
+    {
+        $resourceClass = $request->newResource();
+
+
+        $field = $resourceClass
+            ->availableFields($request)
+            ->where('component', 'nova-attach-many')
+            ->where('attribute', $relationship)
+            ->first();
+
+        $query = $field->resourceClass::newModel();
+
+        return $request->findResourceOrFail()->model()->{$relationship}
+            ->mapInto($field->resourceClass)
             ->filter(function ($resource) use ($request, $field) {
                 return $request->newResource()->authorizedToAttach($request, $resource->resource);
             })->map(function($resource) {
@@ -44,6 +75,7 @@ class AttachController extends Controller
                     'display' => $resource->title(),
                     'value' => $resource->getKey(),
                 ];
-            })->sortBy('display')->values();
+            })->sortBy('display')->slice(0, 10)->values();
     }
+
 }

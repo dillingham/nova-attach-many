@@ -18,9 +18,10 @@
                     <div v-if="loading" class="flex justify-center items-center absolute pin z-50 bg-white">
                         <loader class="text-60" />
                     </div>
-                    <div v-else v-for="resource in resources" :key="resource.value" @click="toggle($event, resource.value)" class="flex py-3 cursor-pointer select-none hover:bg-30">
+
+                    <div v-else v-for="resource in resources" :key="resource.value" @click="toggle($event, resource)" class="flex py-3 cursor-pointer select-none hover:bg-30">
                         <div class="w-16 flex justify-center">
-                            <fake-checkbox :checked="selected.includes(resource.value)" />
+                            <fake-checkbox :checked="selected.includes(resource)" />
                         </div>
                         <span>{{ resource.display }}</span>
                     </div>
@@ -59,10 +60,12 @@ export default {
 
     data() {
         return {
+            ajaxes: [],
             search: null,
             selected: [],
             selectingAll: false,
             available: [],
+            displayed: [],
             preview: false,
             loading: true,
         }
@@ -77,6 +80,7 @@ export default {
                     .then((data) => {
                         this.selected = data.data.selected || [];
                         this.available = data.data.available || [];
+                        this.displayed = this.selected.concat(this.available);
                         this.loading = false;
                     });
             }
@@ -84,6 +88,7 @@ export default {
                 Nova.request(baseUrl + this.resourceName + '/attachable/' + this.field.attribute)
                     .then((data) => {
                         this.available = data.data.available || [];
+                        this.displayed = this.available;
                         this.loading = false;
                     });
             }
@@ -94,12 +99,12 @@ export default {
             formData.append(this.field.attribute, this.value || [])
         },
 
-        toggle(event, id){
-            if(this.selected.includes(id)) {
-                this.selected = this.selected.filter(selectedId => selectedId != id);
+        toggle(event, resource) {
+            if(this.selected.includes(resource) ) {
+                this.selected = this.selected.filter(selectedId => selectedId != resource);
             }
             else {
-                this.selected.push(id)
+                this.selected.push(resource)
             }
         },
         selectAll() {
@@ -151,8 +156,8 @@ export default {
 
             this.selected = selected;
         },
-        clearSearch()
-        {
+        clearSearch() {
+            this.displayed = this.selected;
             this.selectingAll = false;
             this.search = null;
         },
@@ -185,12 +190,10 @@ export default {
             }
 
             if(this.search == null) {
-                return this.available;
+                return this.displayed;
             }
 
-            return this.available.filter((resource) => {
-                return resource.display.toLowerCase().includes(this.search.toLowerCase())
-            });
+            return this.displayed;
         },
         hasErrors: function() {
             return this.errors.errors.hasOwnProperty(this.field.attribute);
@@ -202,11 +205,49 @@ export default {
     watch: {
         'search': {
             handler: function(search) {
-                this.checkIfSelectAllIsActive();
+                search = search.trim();
+
+                if(search === '') {
+                    this.displayed = this.selected;
+                    this.loading = false;
+                    return;
+                }
+
+                this.loading = true;
+
+                this.ajaxes.forEach(t => {
+                    clearTimeout(t)
+                });
+
+                let vm = this;
+                let srch = search;
+
+                let t = setTimeout(function() {
+                    let baseUrl = '/nova-vendor/nova-attach-many/';
+
+                    Nova.request(baseUrl + vm.resourceName + '/attachable/' + vm.field.attribute + '?search=' + srch)
+                        .then((data) => {
+                            vm.available = data.data.available || [];
+                            vm.displayed = vm.selected.concat(vm.available);
+                            vm.loading = false;
+
+                            vm.displayed = vm.displayed.reduce((unique, o) => {
+                                if(!unique.some(obj => obj.label === o.label && obj.value === o.value)) {
+                                    unique.push(o);
+                                }
+                                return unique;
+                            },[]);
+                        });
+
+                    vm.checkIfSelectAllIsActive();
+                }, 500);
+
+                this.ajaxes.push(t);
             }
         },
         'selected': {
             handler: function (selected) {
+                selected = selected.map(a => a.value);
                 this.value = JSON.stringify(selected);
                 this.checkIfSelectAllIsActive();
             },
