@@ -3,7 +3,6 @@
 namespace NovaAttachMany\Http\Controllers;
 
 use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Resource;
 use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -34,11 +33,7 @@ class AttachController extends Controller
             ->where('attribute', $relationship)
             ->first();
 
-        return BelongsToMany::make(
-            null,
-            $relationship,
-            $field->resourceClass
-            )
+        return BelongsToMany::make(null, $relationship, $field->resourceClass)
             ->buildAttachableQuery($request)
             ->get()
             ->mapInto($field->resourceClass)
