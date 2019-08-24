@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2019 Brian Dillingham
+Copyright (c) 2019 Brian Dillingham <brian@dillingham.dev>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
