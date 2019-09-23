@@ -5,10 +5,10 @@ namespace NovaAttachMany;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Authorizable;
-use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 use NovaAttachMany\Rules\ArrayRules;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\ResourceRelationshipGuesser;
+use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 
 class AttachMany extends Field
 {
