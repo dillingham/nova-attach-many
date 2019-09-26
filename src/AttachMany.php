@@ -2,6 +2,7 @@
 
 namespace NovaAttachMany;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Authorizable;
@@ -44,9 +45,15 @@ class AttachMany extends Field
         $this->fillUsing(function($request, $model, $attribute, $requestAttribute) use($resource) {
             if(is_subclass_of($model, 'Illuminate\Database\Eloquent\Model')) {
                 $model::saved(function($model) use($attribute, $request) {
-                    $model->$attribute()->sync(
+                    $changes = $model->$attribute()->sync(
                         json_decode($request->$attribute, true)
                     );
+
+                    $method = Str::camel($attribute) . 'Synced';
+                    
+                    if (method_exists($model, $method)) {
+                        $model->{$method}($changes);
+                    }
                 });
 
                 unset($request->$attribute);
