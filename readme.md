@@ -56,6 +56,31 @@ Here are a few customization options
 The attachable resources will be filtered by relatableQuery()
 So you can filter which resources are able to be attached
 
+### Being Notified of Changes
+You can add a method to the model to be notified of the changes that have happened:
+
+```php
+public function permissionsSynced(array $changes)
+{
+    $changes['attached']; // An array of IDs of attached models
+    $changes['detached']; // An array of IDs of detached models
+    $changes['updated']; // An array of IDs of updated models
+}
+```
+
+The method must be a camel cased version of the attribute name, followed by `Synced`. For example:
+
+```php
+public function fields(Request $request)
+{
+    return [
+        AttachMany::make('Related Authors'),
+    ];
+}
+```
+
+would require a method on the model called `relatedAuthorsSynced()`.
+
 ### Authorization
 This field also respects policies: ie Role / Permission
 - RolePolicy: attachAnyPermission($user, $role)
