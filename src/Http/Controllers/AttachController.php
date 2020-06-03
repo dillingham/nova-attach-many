@@ -17,8 +17,20 @@ class AttachController extends Controller
 
     public function edit(NovaRequest $request, $parent, $parentId, $relationship)
     {
+        // lookup the resource
+        $foundResource = $request->findResourceOrFail();
+
+        // if the $relationship() method exists, we will use that to
+        // determine the keyName
+        if(method_exists($foundResource->model(), $relationship)){
+            $keyName = $foundResource->model()->{$relationship}()->getModel()->getKeyName();
+            // otherwise default to an assumed keyName of `id`
+        }else{
+            $keyName = 'id';
+        }
+
         return [
-            'selected' => $request->findResourceOrFail()->model()->{$relationship}->pluck('id'),
+            'selected' => $foundResource->model()->{$relationship}->pluck($keyName),
             'available' => $this->getAvailableResources($request, $relationship),
         ];
     }
