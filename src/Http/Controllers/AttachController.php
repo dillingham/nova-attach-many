@@ -33,7 +33,7 @@ class AttachController extends Controller
             ->where('attribute', $relationship)
             ->first();
 
-        $query = $field->resourceClass::newModel();
+        $query = $field->resourceClass::newModel()->query();
 
         return $field->resourceClass::relatableQuery($request, $query)->get()
             ->mapInto($field->resourceClass)

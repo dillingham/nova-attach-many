@@ -41,12 +41,14 @@ class AttachMany extends Field
         $this->resourceName = $resource::uriKey();
         $this->manyToManyRelationship = $this->attribute;
 
-        $this->fillUsing(function($request, $model, $attribute, $requestAttribute) use($resource) {
+        $this->fillUsing(function($request, $model, $relationship, $requestAttribute) use($resource, $attribute) {
             if(is_subclass_of($model, 'Illuminate\Database\Eloquent\Model')) {
-                $model::saved(function($model) use($attribute, $request) {
-                    $model->$attribute()->sync(
-                        json_decode($request->$attribute, true)
-                    );
+                $model::saved(function($model) use($relationship, $request, $attribute) {
+                    $model->$relationship()->update([ $model->$relationship()->getForeignKeyName() => null]);
+                    $instances = $model->$relationship()
+                        ->getModel()::whereIn('id', json_decode($request->input($attribute), true))
+                        ->get()->all();
+                    $model->$relationship()->saveMany($instances);
                 });
 
                 unset($request->$attribute);
