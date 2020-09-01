@@ -46,7 +46,7 @@ class AttachMany extends Field
                 $model::saved(function($model) use($relationship, $request, $attribute) {
                     $model->$relationship()->update([ $model->$relationship()->getForeignKeyName() => null]);
                     $instances = $model->$relationship()
-                        ->getModel()::whereIn('id', json_decode($request->input($attribute), true))
+                        ->getModel()::whereIn('id', $request->input($attribute) ? json_decode($request->input($attribute), true) : [])
                         ->get()->all();
                     $model->$relationship()->saveMany($instances);
                 });
