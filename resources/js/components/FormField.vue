@@ -19,10 +19,15 @@
                         <loader class="text-60" />
                     </div>
                     <div v-else v-for="resource in resources" :key="resource.value" @click="toggle($event, resource.value)" class="flex py-3 cursor-pointer select-none hover:bg-30">
-                        <div class="w-16 flex justify-center">
+                        <div class="w-16 flex justify-center items-center">
                             <fake-checkbox :checked="selected.includes(resource.value)" />
                         </div>
-                        <span>{{ resource.display }}</span>
+                        <div>
+                            <p>{{ resource.display }}</p>
+                            <p class="text-sm" v-if="field.showSubtitle && resource.subtitle">
+                                {{ resource.subtitle }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,7 +40,7 @@
                 <span v-if="field.showCounts" class="pr-2 float-left border-60 whitespace-no-wrap" :class="{ 'border-r mr-2': field.helpText }">
                     {{ selected.length  }} / {{ available.length }}
                 </span>
-                
+
                 <span v-if="field.helpText" class="float-left border-60" :class="{'border-r pr-2 mr-2': field.showPreview }">
                     <help-text class="help-text"> {{ field.helpText }} </help-text>
                 </span>

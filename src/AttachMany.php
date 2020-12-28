@@ -29,6 +29,8 @@ class AttachMany extends Field
 
     public $showRefresh = false;
 
+    public $showSubtitle = false;
+
     public $showOnIndex = false;
 
     public $showOnDetail = false;
@@ -97,7 +99,8 @@ class AttachMany extends Field
             'showCounts' => $this->showCounts,
             'showPreview' => $this->showPreview,
             'showToolbar' => $this->showToolbar,
-            'showRefresh' => $this->showRefresh
+            'showRefresh' => $this->showRefresh,
+            'showSubtitle' => $this->showSubtitle,
         ]);
     }
 
@@ -118,10 +121,16 @@ class AttachMany extends Field
 
     public function formatAssociatableResource(NovaRequest $request, $resource)
     {
-        return array_filter([
+        $item = [
             'display' => $this->formatDisplayValue($resource),
             'value' => $resource->getKey(),
-        ]);
+        ];
+
+        if($this->showSubtitle) {
+            $item['subtitle'] = $resource->subtitle();
+        }
+
+        return $item;
     }
 
     public function height($height)
@@ -162,6 +171,13 @@ class AttachMany extends Field
     public function showRefresh($showRefresh=true)
     {
         $this->showRefresh = $showRefresh;
+
+        return $this;
+    }
+
+    public function showSubtitle($showSubtitle=true)
+    {
+        $this->showSubtitle = $showSubtitle;
 
         return $this;
     }
