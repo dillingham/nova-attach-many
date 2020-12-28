@@ -1,7 +1,7 @@
 # Nova Attach Many
 
 [![Latest Version on Github](https://img.shields.io/github/release/dillingham/nova-attach-many.svg?style=flat-square)](https://packagist.org/packages/dillingham/nova-attach-many)
-[![Total Downloads](https://img.shields.io/packagist/dt/dillingham/nova-attach-many.svg?style=flat-square)](https://packagist.org/packages/dillingham/nova-attach-many) [![Twitter Follow](https://img.shields.io/twitter/follow/dillinghammm?color=%231da1f1&label=Twitter&logo=%231da1f1&logoColor=%231da1f1&style=flat-square)](https://twitter.com/dillinghammm)
+[![Total Downloads](https://img.shields.io/packagist/dt/dillingham/nova-attach-many.svg?style=flat-square)](https://packagist.org/packages/dillingham/nova-attach-many) [![Twitter Follow](https://img.shields.io/twitter/follow/dillinghammm?color=%231da1f1&label=Twitter&logo=%231da1f1&logoColor=%231da1f1&style=flat-square)](https://twitter.com/im_brian_d)
 
 Belongs To Many create & edit form UI for Nova. Enables attaching relationships easily and includes validation.
 
@@ -62,10 +62,12 @@ This field also respects policies: ie Role / Permission
 - RolePolicy: attachPermission($user, $role, $permission)
 - PermissionPolicy: viewAny($user)
 
-### TODO
+---
 
-[] Add pagination for large amount of resources
+# Author
 
-### Thanks
+Hi 👋, Im Brian D. I created this Nova package [and others](https://novapackages.com/collaborators/dillingham)
 
-[dkulyk](https://github.com/dkulyk) helped with authorization
+Hope you find it useful. Feel free to reach out with feedback.
+
+Follow me on twitter: [@im_brian_d](https://twitter.com/im_brian_d) 
