@@ -8,10 +8,12 @@ use Laravel\Nova\Authorizable;
 use NovaAttachMany\Rules\ArrayRules;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\ResourceRelationshipGuesser;
+use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 
 class AttachMany extends Field
 {
     use Authorizable;
+    use FormatsRelatableDisplayValues;
 
     public $height = '300px';
 
@@ -26,6 +28,8 @@ class AttachMany extends Field
     public $showOnIndex = false;
 
     public $showOnDetail = false;
+
+    public $display;
 
     public $component = 'nova-attach-many';
 
@@ -94,6 +98,14 @@ class AttachMany extends Field
         return call_user_func([ $this->resourceClass, 'authorizedToViewAny'], $request)
             && $request->newResource()->authorizedToAttachAny($request, $this->resourceClass::newModel())
             && parent::authorize($request);
+    }
+
+    public function formatAssociatableResource(NovaRequest $request, $resource)
+    {
+        return array_filter([
+            'display' => $this->formatDisplayValue($resource),
+            'value' => $resource->getKey(),
+        ]);
     }
 
     public function height($height)
