@@ -13,6 +13,7 @@
         "cross-env": "^5.0.0",
         "laravel-mix": "^6.0.5",
         "laravel-nova": "^1.0",
+        "postcss": "^8.2.1",
         "vue-loader": "^15.9.6"
     },
     "dependencies": {
