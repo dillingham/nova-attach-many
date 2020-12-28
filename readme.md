@@ -84,15 +84,6 @@ So you can filter which resources are able to be attached
 
 You can add a method to the resource to be notified of the changes that have happened:
 
-```php
-public function permissionsSynced(array $changes)
-{
-    $changes['attached']; // An array of IDs of attached models
-    $changes['detached']; // An array of IDs of detached models
-    $changes['updated']; // An array of IDs of updated models
-}
-```
-
 The method must be a camel cased version of the attribute name, followed by `Synced`. For example:
 
 ```php
@@ -104,7 +95,14 @@ public function fields(Request $request)
 }
 ```
 
-Passes $changes to ``permissionsSynced` on the same resource.
+```php
+public function permissionsSynced(array $changes)
+{
+    $changes['attached']; // An array of IDs of attached models
+    $changes['detached']; // An array of IDs of detached models
+    $changes['updated']; // An array of IDs of updated models
+}
+```
 
 
 ### Authorization
