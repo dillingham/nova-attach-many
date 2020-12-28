@@ -54,6 +54,7 @@ Here are a few customization options
 - `->hideToolbar()` Removes search & select all
 - `->height('500px')` Set custom height
 - `->fullWidth()` Set to full width
+- `->showRefresh()` Request the resources again
 - `->help('<b>Tip:</b> help text')` Set the help text
 
 ### All Options Demo
