@@ -27,12 +27,7 @@ public function fields(Request $request)
 }
 ```
 
-You can explicitly define the relationship:
-
-```php
-AttachMany::make('Field Name', 'relationshipName');
-```
-And or explicitly define the Nova resource:
+You can explicitly define the relationship & Nova resource:
 
 ```php
 AttachMany::make('Field Name', 'relationshipName', RelatedResource::class);
