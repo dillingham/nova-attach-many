@@ -35,9 +35,9 @@ AttachMany::make('Field Name', 'relationshipName', RelatedResource::class);
 
 ### Display on detail:
 
-This package provides the UI for the create / edit view that BelongsToMany does not.
+This package only provides the create / edit views that BelongsToMany does not.
 
-However, the BelongsToMany should be used for displaying the table on detail views.
+BelongsToMany should be used for displaying the table on detail views.
 
 ```php
 public function fields(Request $request)
@@ -99,12 +99,12 @@ The method must be a camel cased version of the attribute name, followed by `Syn
 public function fields(Request $request)
 {
     return [
-        AttachMany::make('Related Authors'),
+        AttachMany::make('Permissions'),
     ];
 }
 ```
 
-would require a method on the resource called `relatedAuthorsSynced()`.
+Passes $changes to ``permissionsSynced` on the same resource.
 
 
 ### Authorization
