@@ -17,17 +17,13 @@ class AttachController extends Controller
 
     public function edit(NovaRequest $request, $parent, $parentId, $relationship)
     {
-        // lookup the resource
         $foundResource = $request->findResourceOrFail();
 
-        // if the $relationship() method exists, we will use that to
-        // determine the keyName
-        if(method_exists($foundResource->model(), $relationship)){
-            $keyName = $foundResource->model()->{$relationship}()->getModel()->getKeyName();
-            // otherwise default to an assumed keyName of `id`
-        }else{
-            $keyName = 'id';
+        if(! method_exists($foundResource->model(), $relationship)) {
+            abort(500, class_basename($foundResource->model()) . " is missing relationship: $relationship");
         }
+
+        $keyName = $foundResource->model()->{$relationship}()->getModel()->getKeyName();
 
         return [
             'selected' => $foundResource->model()->{$relationship}->pluck($keyName),
@@ -55,7 +51,7 @@ class AttachController extends Controller
                 return $field->formatAssociatableResource($request, $resource);
             })->sortBy('display')->values();
     }
-    
+
     /**
      * Get the associatable query method name.
      *
