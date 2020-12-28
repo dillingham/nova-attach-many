@@ -106,6 +106,10 @@ class AttachMany extends Field
 
     public function authorize(Request $request)
     {
+        if (property_exists($this, 'seeCallback') && ! is_null($this->seeCallback)) {
+            return $this->authorizedToSee($request);
+        }
+
         if(! $this->resourceClass::authorizable()) {
             return true;
         }
