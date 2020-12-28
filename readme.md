@@ -27,6 +27,18 @@ public function fields(Request $request)
 }
 ```
 
+You can explicitly define the relationship:
+
+```php
+AttachMany::make('Field Name', 'relationshipName');
+```
+And or explicitly define the Nova resource:
+
+```php
+AttachMany::make('Field Name', 'relationshipName', RelatedResource::class);
+```
+
+
 ### Validation
 
 You can set min, max, size or custom rule objects
