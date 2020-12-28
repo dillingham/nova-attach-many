@@ -33,6 +33,21 @@ You can explicitly define the relationship & Nova resource:
 AttachMany::make('Field Name', 'relationshipName', RelatedResource::class);
 ```
 
+### Display on detail:
+
+This package provides the UI for the create / edit view that BelongsToMany does not.
+
+However, the BelongsToMany should be used for displaying the table on detail views.
+
+```php
+public function fields(Request $request)
+{
+    return [
+        AttachMany::make('Permissions'),
+        BelongsToMany::make('Permissions'),
+    ];
+}
+```
 
 ### Validation
 
