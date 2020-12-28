@@ -39,9 +39,13 @@
                     <help-text class="help-text" v-if="field.helpText"> {{ field.helpText }} </help-text>
                 </span>
 
-                <span v-if="field.showPreview" @click="togglePreview($event)" class="flex cursor-pointer select-none float-right">
+                <span v-if="field.showPreview" @click="togglePreview($event)" class="flex cursor-pointer select-none border-60 float-right" :class="{'border-r pr-2 mr-2': field.showRefresh }">
                     <span class="pr-2">{{ __('Preview') }}</span>
                     <fake-checkbox class="flex" :checked="preview" />
+                </span>
+
+                <span v-if="field.showRefresh" @click="refresh($event)" class="flex cursor-pointer select-none float-right">
+                    <span>{{ __('Refresh') }}</span>
                 </span>
             </div>
 
@@ -69,13 +73,20 @@ export default {
     },
     methods: {
         setInitialValue() {
+            this.retrieveData();
+        },
 
+        retrieveData(keepSelected=false) {
             let baseUrl = '/nova-vendor/nova-attach-many/';
 
             if(this.resourceId) {
                 Nova.request(baseUrl + this.resourceName + '/' + this.resourceId + '/attachable/' + this.field.attribute)
                     .then((data) => {
-                        this.selected = data.data.selected || [];
+                        if(keepSelected) {
+                            this.selected = _.intersection(this.selected, _.map(data.data.available, 'value'));
+                        } else {
+                            this.selected = data.data.selected || [];
+                        }
                         this.available = data.data.available || [];
                         this.loading = false;
                     });
@@ -87,7 +98,6 @@ export default {
                         this.loading = false;
                     });
             }
-
         },
 
         fill(formData) {
@@ -102,6 +112,12 @@ export default {
                 this.selected.push(id)
             }
         },
+
+        refresh(event){
+            this.loading = true;
+            this.retrieveData(true);
+        },
+
         selectAll() {
             var selected = this.selected;
 

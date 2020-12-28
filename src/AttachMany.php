@@ -25,6 +25,8 @@ class AttachMany extends Field
 
     public $showPreview = false;
 
+    public $showRefresh = false;
+
     public $showOnIndex = false;
 
     public $showOnDetail = false;
@@ -81,7 +83,8 @@ class AttachMany extends Field
             'fullWidth' => $this->fullWidth,
             'showCounts' => $this->showCounts,
             'showPreview' => $this->showPreview,
-            'showToolbar' => $this->showToolbar
+            'showToolbar' => $this->showToolbar,
+            'showRefresh' => $this->showRefresh
         ]);
     }
 
@@ -139,6 +142,13 @@ class AttachMany extends Field
     public function showPreview($showPreview=true)
     {
         $this->showPreview = $showPreview;
+
+        return $this;
+    }
+
+    public function showRefresh($showRefresh=true)
+    {
+        $this->showRefresh = $showRefresh;
 
         return $this;
     }
