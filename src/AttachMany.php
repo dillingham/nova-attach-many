@@ -52,7 +52,7 @@ class AttachMany extends Field
                 $model::saved(function($model) use($attribute, $request) {
 
                     // fetch the submitted values
-                    $values = json_decode($request->$attribute, true);
+                    $values = json_decode(request()->input($attribute), true);
 
                     // remove `null` values that may be submitted
                     $filtered_values = array_filter($values);
@@ -69,7 +69,11 @@ class AttachMany extends Field
                     }
                 });
 
-                unset($request->$attribute);
+                // prevent relationship json on parent resource:
+
+                $request->replace(
+                    $request->except($attribute)
+                );
             }
         });
     }
