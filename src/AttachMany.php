@@ -2,9 +2,10 @@
 
 namespace NovaAttachMany;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Authorizable;
+use Laravel\Nova\Fields\Field;
 use NovaAttachMany\Rules\ArrayRules;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\ResourceRelationshipGuesser;
@@ -13,6 +14,7 @@ use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 class AttachMany extends Field
 {
     use Authorizable;
+
     use FormatsRelatableDisplayValues;
 
     public $height = '300px';
@@ -56,8 +58,15 @@ class AttachMany extends Field
                     $filtered_values = array_filter($values);
 
                     // sync
-                    $model->$attribute()->sync($filtered_values);
+                    $changes = $model->$attribute()->sync($filtered_values);
 
+                    $method = Str::camel($attribute) . 'Synced';
+
+                    $parent = $request->newResource();
+
+                    if (method_exists($parent, $method)) {
+                        $parent->{$method}($changes);
+                    }
                 });
 
                 unset($request->$attribute);
