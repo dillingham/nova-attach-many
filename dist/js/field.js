@@ -26954,21 +26954,21 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _c(
-                "span",
-                {
-                  staticClass: "float-left border-60",
-                  class: { "border-r mr-2": _vm.field.showPreview }
-                },
-                [
-                  _vm.field.helpText
-                    ? _c("help-text", { staticClass: "help-text" }, [
+              _vm.field.helpText
+                ? _c(
+                    "span",
+                    {
+                      staticClass: "float-left border-60",
+                      class: { "border-r mr-2": _vm.field.showPreview }
+                    },
+                    [
+                      _c("help-text", { staticClass: "help-text" }, [
                         _vm._v(" " + _vm._s(_vm.field.helpText) + " ")
                       ])
-                    : _vm._e()
-                ],
-                1
-              ),
+                    ],
+                    1
+                  )
+                : _vm._e(),
               _vm._v(" "),
               _vm.field.showPreview
                 ? _c(
