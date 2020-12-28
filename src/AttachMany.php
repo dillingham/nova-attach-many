@@ -2,9 +2,10 @@
 
 namespace NovaAttachMany;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Authorizable;
+use Laravel\Nova\Fields\Field;
 use NovaAttachMany\Rules\ArrayRules;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\ResourceRelationshipGuesser;
@@ -13,6 +14,7 @@ use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 class AttachMany extends Field
 {
     use Authorizable;
+
     use FormatsRelatableDisplayValues;
 
     public $height = '300px';
@@ -52,17 +54,28 @@ class AttachMany extends Field
                 $model::saved(function($model) use($attribute, $request) {
 
                     // fetch the submitted values
-                    $values = json_decode($request->$attribute, true);
+                    $values = json_decode(request()->input($attribute), true);
 
                     // remove `null` values that may be submitted
                     $filtered_values = array_filter($values);
 
                     // sync
-                    $model->$attribute()->sync($filtered_values);
+                    $changes = $model->$attribute()->sync($filtered_values);
 
+                    $method = Str::camel($attribute) . 'Synced';
+
+                    $parent = $request->newResource();
+
+                    if (method_exists($parent, $method)) {
+                        $parent->{$method}($changes);
+                    }
                 });
 
-                unset($request->$attribute);
+                // prevent relationship json on parent resource:
+
+                $request->replace(
+                    $request->except($attribute)
+                );
             }
         });
     }

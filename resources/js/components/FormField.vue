@@ -35,7 +35,8 @@
                 <span v-if="field.showCounts" class="pr-2 float-left border-60 whitespace-no-wrap" :class="{ 'border-r mr-2': field.helpText }">
                     {{ selected.length  }} / {{ available.length }}
                 </span>
-                <span v-if="field.helpText" class="float-left border-60" :class="{'border-r mr-2': field.showPreview }">
+                
+                <span v-if="field.helpText" class="float-left border-60" :class="{'border-r pr-2 mr-2': field.showPreview }">
                     <help-text class="help-text"> {{ field.helpText }} </help-text>
                 </span>
 
