@@ -31,6 +31,8 @@ class AttachMany extends Field
 
     public $showSubtitle = false;
 
+    public $customKey;
+
     public $showOnIndex = false;
 
     public $showOnDetail = false;
@@ -127,7 +129,7 @@ class AttachMany extends Field
     {
         $item = [
             'display' => $this->formatDisplayValue($resource),
-            'value' => $resource->getKey(),
+            'value' => $this->customKey ? $resource->{$this->customKey} : $resource->getKey(),
         ];
 
         if($this->showSubtitle) {
@@ -182,6 +184,13 @@ class AttachMany extends Field
     public function showSubtitle($showSubtitle=true)
     {
         $this->showSubtitle = $showSubtitle;
+
+        return $this;
+    }
+
+    public function withCustomKey($customKey)
+    {
+        $this->customKey = $customKey;
 
         return $this;
     }
