@@ -31,8 +31,6 @@ class AttachMany extends Field
 
     public $showSubtitle = false;
 
-    public $customKey;
-
     public $showOnIndex = false;
 
     public $showOnDetail = false;
@@ -125,11 +123,11 @@ class AttachMany extends Field
             && parent::authorize($request);
     }
 
-    public function formatAssociatableResource(NovaRequest $request, $resource)
+    public function formatAssociatableResource(NovaRequest $request, $resource, $parentModel, $relationship)
     {
         $item = [
             'display' => $this->formatDisplayValue($resource),
-            'value' => $this->customKey ? $resource->{$this->customKey} : $resource->getKey(),
+            'value' => $resource->{$parentModel->$relationship()->getRelatedKeyName()},
         ];
 
         if($this->showSubtitle) {
@@ -188,10 +186,4 @@ class AttachMany extends Field
         return $this;
     }
 
-    public function withCustomKey($customKey)
-    {
-        $this->customKey = $customKey;
-
-        return $this;
-    }
 }
