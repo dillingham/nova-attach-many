@@ -45,10 +45,10 @@ class AttachController extends Controller
 
         return forward_static_call($this->associatableQueryCallable($request, $query), $request, $query)->get()
             ->mapInto($field->resourceClass)
-            ->filter(function ($resource) use ($request, $field) {
+            ->filter(function ($resource) use ($request) {
                 return $request->newResource()->authorizedToAttach($request, $resource->resource);
-            })->map(function ($resource) use ($request, $field) {
-                return $field->formatAssociatableResource($request, $resource);
+            })->map(function ($resource) use ($request, $field, $resourceClass, $relationship) {
+                return $field->formatAssociatableResource($request, $resource, $resourceClass->newModel(), $relationship);
             })->sortBy('display')->values();
     }
 

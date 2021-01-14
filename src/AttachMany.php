@@ -128,11 +128,11 @@ class AttachMany extends Field
             && parent::authorize($request);
     }
 
-    public function formatAssociatableResource(NovaRequest $request, $resource)
+    public function formatAssociatableResource(NovaRequest $request, $resource, $parentModel, $relationship)
     {
         $item = [
             'display' => $this->formatDisplayValue($resource),
-            'value' => $resource->getKey(),
+            'value' => $resource->{$parentModel->$relationship()->getRelatedKeyName()},
         ];
 
         if($this->showSubtitle) {
@@ -190,4 +190,5 @@ class AttachMany extends Field
 
         return $this;
     }
+
 }
