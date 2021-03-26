@@ -49,7 +49,7 @@ class AttachController extends Controller
                 return $request->newResource()->authorizedToAttach($request, $resource->resource);
             })->map(function ($resource) use ($request, $field) {
                 return $field->formatAssociatableResource($request, $resource);
-            })->sortBy('display')->values();
+            })->values();
     }
 
     /**
