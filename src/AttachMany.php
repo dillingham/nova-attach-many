@@ -74,7 +74,7 @@ class AttachMany extends Field
                     $parent = $request->newResource();
 
                     if (method_exists($parent, $method)) {
-                        $parent->{$method}($changes);
+                        $parent->{$method}($changes, $model);
                     }
                 });
 
