@@ -19,6 +19,8 @@ class AttachMany extends Field
 
     public $height = '300px';
 
+    public $orderBy = [];
+
     public $fullWidth = false;
 
     public $showToolbar = true;
@@ -57,7 +59,7 @@ class AttachMany extends Field
 
                     // fetch the submitted values
                     $values = json_decode(request()->input($attribute), true);
-                    
+
                     // if $values is null make it an empty array instead
                     if (is_null($values)) {
                         $values = [];
@@ -100,6 +102,7 @@ class AttachMany extends Field
     {
         $this->withMeta([
             'height' => $this->height,
+            'orderBy' => $this->orderBy,
             'fullWidth' => $this->fullWidth,
             'showCounts' => $this->showCounts,
             'showPreview' => $this->showPreview,
@@ -145,6 +148,13 @@ class AttachMany extends Field
     public function height($height)
     {
         $this->height = $height;
+
+        return $this;
+    }
+
+    public function orderBy($orderBy)
+    {
+        $this->orderBy = $orderBy;
 
         return $this;
     }

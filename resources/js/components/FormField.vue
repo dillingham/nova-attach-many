@@ -85,8 +85,9 @@ export default {
         retrieveData(keepSelected=false) {
             let baseUrl = '/nova-vendor/nova-attach-many/';
 
+            let orderByStr = this.field.orderBy ? '?orderby=' + this.field.orderBy.join(',') : ''
             if(this.resourceId) {
-                Nova.request(baseUrl + this.resourceName + '/' + this.resourceId + '/attachable/' + this.field.attribute)
+                Nova.request(baseUrl + this.resourceName + '/' + this.resourceId + '/attachable/' + this.field.attribute + orderByStr)
                     .then((data) => {
                         if(keepSelected) {
                             this.selected = _.intersection(this.selected, _.map(data.data.available, 'value'));
@@ -98,7 +99,7 @@ export default {
                     });
             }
             else {
-                Nova.request(baseUrl + this.resourceName + '/attachable/' + this.field.attribute)
+                Nova.request(baseUrl + this.resourceName + '/attachable/' + this.field.attribute + orderByStr)
                     .then((data) => {
                         this.available = data.data.available || [];
                         this.loading = false;

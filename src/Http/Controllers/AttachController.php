@@ -43,13 +43,24 @@ class AttachController extends Controller
 
         $query = $field->resourceClass::newModel();
 
-        return forward_static_call($this->associatableQueryCallable($request, $query), $request, $query)->get()
-            ->mapInto($field->resourceClass)
-            ->filter(function ($resource) use ($request, $field) {
-                return $request->newResource()->authorizedToAttach($request, $resource->resource);
-            })->map(function ($resource) use ($request, $field) {
-                return $field->formatAssociatableResource($request, $resource);
-            })->values();
+        $orderByCSV = $request->query('orderby');
+
+        $queryBuilder = forward_static_call($this->associatableQueryCallable($request, $query), $request, $query);
+
+        if ($orderByCSV) {
+            $orderBys = array_map('trim', explode(',', $orderByCSV));
+            foreach ($orderBys as $orderBy) {
+                $queryBuilder = $queryBuilder->orderBy($orderBy);
+            }
+        }
+
+        return $queryBuilder->get()
+        ->mapInto($field->resourceClass)
+        ->filter(function ($resource) use ($request, $field) {
+            return $request->newResource()->authorizedToAttach($request, $resource->resource);
+        })->map(function ($resource) use ($request, $field) {
+            return $field->formatAssociatableResource($request, $resource);
+        })->values();
     }
 
     /**
