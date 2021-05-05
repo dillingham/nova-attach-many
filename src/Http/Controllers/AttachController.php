@@ -50,7 +50,8 @@ class AttachController extends Controller
         if ($orderByCSV) {
             $orderBys = array_map('trim', explode(',', $orderByCSV));
             foreach ($orderBys as $orderBy) {
-                $queryBuilder = $queryBuilder->orderBy($orderBy);
+                list($column, $direction) = explode(':', $orderBy);
+                $queryBuilder = $queryBuilder->orderBy($column, $direction);
             }
         }
 

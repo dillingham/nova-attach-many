@@ -19,7 +19,7 @@ class AttachMany extends Field
 
     public $height = '300px';
 
-    public $orderBy = [];
+    public $orderBy = '';
 
     public $fullWidth = false;
 
@@ -152,9 +152,21 @@ class AttachMany extends Field
         return $this;
     }
 
-    public function orderBy($orderBy)
+    public function orderBy($orderByArr)
     {
-        $this->orderBy = $orderBy;
+        $this->orderBy = '';
+        if (count($orderByArr)) {
+            $this->orderBy = '?orderby=';
+            foreach ($orderByArr as $key => $value) {
+                if (is_numeric($key)) {
+                    $this->orderBy .= $value . ':asc,';
+                } else {
+                    $direction = (strtolower($value) == 'desc' ? 'desc' : 'asc');
+                    $this->orderBy .= $key . ':' . $direction . ',';
+                }
+            }
+            $this->orderBy = rtrim($this->orderBy, ',');
+        }
 
         return $this;
     }
