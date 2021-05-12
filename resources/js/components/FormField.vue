@@ -211,7 +211,15 @@ export default {
             }
 
             return this.available.filter((resource) => {
-                return resource.display.toLowerCase().includes(this.search.toLowerCase())
+                const term = this.search.toLowerCase(),
+                      display = resource.display.toLowerCase(),
+                      subtitle = resource.subtitle ? resource.subtitle.toLowerCase() : null;
+
+                if (this.field.searchWithinSubtitle && subtitle) {
+                    return display.includes(term) || subtitle.includes(term);
+                }
+
+                return display.includes(term);
             });
         },
         hasErrors: function() {

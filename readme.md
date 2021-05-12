@@ -71,6 +71,7 @@ Here are a few customization options
 - `->fullWidth()` Set to full width
 - `->showRefresh()` Request the resources again
 - `->showSubtitle()` Show the resource's subtitle
+- `->searchWithinSubtitle()` Search for the term within the subtitle as well as the display value
 - `->help('<b>Tip:</b> help text')` Set the help text
 
 ### All Options Demo
