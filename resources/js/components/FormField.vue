@@ -213,9 +213,9 @@ export default {
             return this.available.filter((resource) => {
                 const term = this.search.toLowerCase(),
                       display = resource.display.toLowerCase(),
-                      subtitle = resource.subtitle.toLowerCase();
+                      subtitle = resource.subtitle ? resource.subtitle.toLowerCase() : null;
 
-                if (this.field.searchWithinSubtitle) {
+                if (this.field.searchWithinSubtitle && subtitle) {
                     return display.includes(term) || subtitle.includes(term);
                 }
 
