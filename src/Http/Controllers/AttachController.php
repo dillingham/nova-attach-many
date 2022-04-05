@@ -43,7 +43,7 @@ class AttachController extends Controller
 
         $query = $field->resourceClass::newModel();
 
-        return forward_static_call($this->associatableQueryCallable($request, $query), $request, $query)->get()
+        return forward_static_call($this->associatableQueryCallable($request, $query), $request, $query, $field)->get()
             ->mapInto($field->resourceClass)
             ->filter(function ($resource) use ($request, $field) {
                 return $request->newResource()->authorizedToAttach($request, $resource->resource);
