@@ -2,9 +2,11 @@
 
 namespace NovaAttachMany\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\ServiceProvider;
+use NovaAttachMany\Http\Middleware\Authorize;
 
 class FieldServiceProvider extends ServiceProvider
 {
@@ -15,15 +17,29 @@ class FieldServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->booted(function () {
+            $this->routes();
+        });
+
         Nova::serving(function (ServingNova $event) {
             Nova::script('nova-attach-many', __DIR__.'/../../dist/js/field.js');
         });
+    }
 
-        $this->app->booted(function () {
-            \Route::middleware(['nova'])
-                ->prefix('nova-vendor/nova-attach-many')
-                ->group(__DIR__.'/../../routes/api.php');
-        });
+    /**
+     * Register the tool's routes.
+     *
+     * @return void
+     */
+    protected function routes()
+    {
+        if ($this->app->routesAreCached()) {
+            return;
+        }
+
+        Route::middleware(['nova'])
+            ->prefix('nova-vendor/nova-attach-many')
+            ->group(__DIR__.'/../../routes/api.php');
     }
 
     /**

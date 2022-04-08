@@ -1,5 +1,9 @@
 let mix = require('laravel-mix')
 
-mix.setPublicPath('dist')
+require('./mix')
+
+mix
+    .setPublicPath('dist')
     .js('resources/js/field.js', 'js')
-    .vue({ version: 2 })
+    .vue({ version: 3 })
+    .nova("dillingham/nova-attach-many")
