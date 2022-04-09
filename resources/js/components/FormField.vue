@@ -29,10 +29,12 @@
                         :checked="selected.includes(resource.value)"
                         @input="toggle($event, resource.value)"
                     >
-                        <div>{{ resource.display }}</div>
-                        <div v-if="currentField.withSubtitles">
-                            <span v-if="resource.subtitle">{{ resource.subtitle }}</span>
-                            <span v-else>{{ __('No additional information...') }}</span>
+                        <div class="flex flex-col">
+                            <div>{{ resource.display }}</div>
+                            <div v-if="currentField.withSubtitles">
+                                <span v-if="resource.subtitle">{{ resource.subtitle }}</span>
+                                <span v-else>{{ __('No additional information...') }}</span>
+                            </div>
                         </div>
                     </CheckboxWithLabel>
                 </div>
