@@ -103,6 +103,10 @@ export default {
                         this.available = data.data.available || [];
                         this.loading = false;
                     });
+
+                if (this.field.value) {
+                    this.selected = this.field.value;
+                }
             }
         },
 
