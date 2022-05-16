@@ -23,7 +23,7 @@ class AttachController extends Controller
             abort(500, class_basename($foundResource->model()) . " is missing relationship: $relationship");
         }
 
-        $keyName = $foundResource->model()->{$relationship}()->getModel()->getKeyName();
+        $keyName = $foundResource->model()->{$relationship}()->getRelatedKeyName();
 
         return [
             'selected' => $foundResource->model()->{$relationship}->pluck($keyName),
