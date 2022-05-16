@@ -47,8 +47,8 @@ class AttachController extends Controller
             ->mapInto($field->resourceClass)
             ->filter(function ($resource) use ($request, $field) {
                 return $request->newResource()->authorizedToAttach($request, $resource->resource);
-            })->map(function ($resource) use ($request, $field) {
-                return $field->formatAssociatableResource($request, $resource);
+            })->map(function ($resource) use ($request, $field, $resourceClass, $relationship) {
+                return $field->formatAssociatableResource($request, $resource, $resourceClass->newModel(), $relationship);
             })->values();
     }
 
