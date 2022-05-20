@@ -39,7 +39,7 @@ class AttachMany extends Field
 
     public $component = 'nova-attach-many';
 
-    public function __construct($name, $attribute = null, $resource = null)
+    public function __construct($name, $attribute = null, $resource = null, $pivot = null)
     {
         parent::__construct($name, $attribute);
 
@@ -51,9 +51,9 @@ class AttachMany extends Field
         $this->resourceName = $resource::uriKey();
         $this->manyToManyRelationship = $this->attribute;
 
-        $this->fillUsing(function($request, $model, $attribute, $requestAttribute) use($resource) {
+        $this->fillUsing(function($request, $model, $attribute, $requestAttribute) use($resource, $pivot) {
             if(is_subclass_of($model, 'Illuminate\Database\Eloquent\Model')) {
-                $model::saved(function($model) use($attribute, $request) {
+                $model::saved(function($model) use($attribute, $request, $pivot) {
 
                     // fetch the submitted values
                     $values = json_decode(request()->input($attribute), true);
@@ -67,7 +67,12 @@ class AttachMany extends Field
                     $filtered_values = array_filter($values);
 
                     // sync
-                    $changes = $model->$attribute()->sync($filtered_values);
+                    if($pivot) {
+                        $changes = $model->$attribute()->syncWithPivotValues($filtered_values, $pivot); 
+                    } else {
+                        $changes = $model->$attribute()->sync($filtered_values);
+                    }
+                    
 
                     $method = Str::camel($attribute) . 'Synced';
 

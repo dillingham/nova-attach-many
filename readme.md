@@ -33,6 +33,14 @@ You can explicitly define the relationship & Nova resource:
 AttachMany::make('Field Name', 'relationshipName', RelatedResource::class);
 ```
 
+### Pivot Values
+You can pass additional parameters for any pivot value.  
+For details, please check https://laravel.com/docs/9.x/eloquent-relationships#syncing-associations
+
+```php
+AttachMany::make('Field Name', 'relationshipName', RelatedResource::class, ['pivot_name' => value]);
+```
+
 ### Display on detail:
 
 This package only provides the create / edit views that BelongsToMany does not.
