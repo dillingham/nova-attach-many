@@ -1,69 +1,82 @@
 <template>
-    <default-field :field="field" :full-width-content="field.fullWidth" :show-help-text="false">
-        <template slot="field" :class="{'border-danger border': hasErrors}">
+    <DefaultField :field="currentField" :full-width-content="currentField.fullWidth" :show-help-text="false">
+        <template #field :class="{'border-danger border': hasErrors}">
             <div class="attach-many-container" :class="{'border-danger border': hasErrors}">
-                <div v-if="field.showToolbar" class="flex border-b-0 border border-40 relative">
-                    <div v-if="preview" class="flex justify-center items-center absolute pin z-10 bg-white">
-                        <h3>{{ __('Selected Items') }} ({{ selected.length  }})</h3>
+                <div v-if="currentField.showToolbar" class="flex items-center border border-b-0 border-gray-100 dark:border-gray-700">
+                    <div v-if="preview" class="flex justify-center p-3 w-full">
+                        <div class="text-xl">{{ __('Selected Items') }} ({{ selected.length  }})</div>
                     </div>
-                    <div @click="selectAll" class="w-16 text-center flex justify-center items-center">
-                        <fake-checkbox :checked="selectingAll" class="cursor-pointer"></fake-checkbox>
-                    </div>
-                    <div class="flex-1 flex items-center relative">
-                        <input v-model="search" type="text" :placeholder="__('Search')" class="form-control form-input form-input-bordered w-full ml-0 m-4">
-                        <span v-if="search" @click="clearSearch" class="pin-r font-sans font-bolder absolute pr-8 cursor-pointer text-black hover:text-80">x</span>
+                    <div v-else class="flex items-center w-full">
+                        <div class="px-3">
+                            <Checkbox @click="selectAll" :checked="selectingAll" class="cursor-pointer" />
+                        </div>
+                        <input
+                            v-model="search"
+                            type="search"
+                            :placeholder="__('Search')"
+                            class="w-full form-control form-input form-input-bordered" />
                     </div>
                 </div>
-                <div class="border border-40 relative overflow-auto" :style="{ height: field.height }">
-                    <div v-if="loading" class="flex justify-center items-center absolute pin z-50 bg-white">
-                        <loader class="text-60" />
+                <div class="border border-gray-100 dark:border-gray-700 relative overflow-scroll" :style="{ height: currentField.height }" >
+                    <div v-if="loading" class="flex justify-center" :style="{ height: currentField.height }">
+                        <loader />
                     </div>
-                    <div v-else v-for="resource in resources" :key="resource.value" @click="toggle($event, resource.value)" class="flex py-3 cursor-pointer select-none hover:bg-30">
-                        <div class="w-16 flex justify-center items-center">
-                            <fake-checkbox :checked="selected.includes(resource.value)" />
+                    <CheckboxWithLabel
+                        v-else
+                        class="p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                        v-for="resource in resources"
+                        :key="resource.value"
+                        :checked="selected.includes(resource.value)"
+                        @input="toggle($event, resource.value)"
+                    >
+                        <div class="flex flex-col">
+                            <div>{{ resource.display }}</div>
+                            <div v-if="currentField.withSubtitles">
+                                <span v-if="resource.subtitle">{{ resource.subtitle }}</span>
+                                <span v-else>{{ __('No additional information...') }}</span>
+                            </div>
                         </div>
-                        <div>
-                            <p>{{ resource.display }}</p>
-                            <p class="text-sm" v-if="field.showSubtitle && resource.subtitle">
-                                {{ resource.subtitle }}
-                            </p>
-                        </div>
-                    </div>
+                    </CheckboxWithLabel>
                 </div>
             </div>
 
-            <help-text class="error-text mt-2 text-danger" v-if="hasErrors">
+            <HelpText class="error-text mt-2 text-danger" v-if="hasErrors">
                 {{ firstError }}
-            </help-text>
+            </HelpText>
 
-            <div class="help-text mt-3 w-full flex" :class="{ 'invisible': loading }">
-                <span v-if="field.showCounts" class="pr-2 float-left border-60 whitespace-no-wrap" :class="{ 'border-r mr-2': field.helpText }">
+            <div class="help-text mt-3 w-full flex justify-between" :class="{ 'invisible': loading }">
+                <span v-if="currentField.showCounts">
                     {{ selected.length  }} / {{ available.length }}
                 </span>
 
-                <span v-if="field.helpText" class="float-left border-60" :class="{'border-r pr-2 mr-2': field.showPreview }">
-                    <help-text class="help-text"> {{ field.helpText }} </help-text>
+                <span v-if="currentField.helpText">
+                    <HelpText class="help-text"> {{ currentField.helpText }} </HelpText>
                 </span>
 
-                <span v-if="field.showPreview" @click="togglePreview($event)" class="flex cursor-pointer select-none border-60 float-right" :class="{'border-r pr-2 mr-2': field.showRefresh }">
-                    <span class="pr-2">{{ __('Preview') }}</span>
-                    <fake-checkbox class="flex" :checked="preview" />
+                <span v-if="currentField.showPreview">
+                    <CheckboxWithLabel @input="togglePreview($event)" :checked="preview" class="cursor-pointer">{{ __('Preview') }}</CheckboxWithLabel>
                 </span>
 
-                <span v-if="field.showRefresh" @click="refresh($event)" class="flex cursor-pointer select-none float-right">
+                <span v-if="currentField.showRefresh" @click="refresh($event)" class="cursor-pointer">
                     <span>{{ __('Refresh') }}</span>
                 </span>
             </div>
 
         </template>
-    </default-field>
+    </DefaultField>
 </template>
 
 <script>
-import { FormField, HandlesValidationErrors } from 'laravel-nova'
+import {
+    DependentFormField,
+    HandlesValidationErrors
+} from 'laravel-nova'
 
 export default {
-    mixins: [FormField, HandlesValidationErrors],
+    mixins: [
+        DependentFormField,
+        HandlesValidationErrors,
+    ],
 
     props: ['resourceName', 'resourceId', 'field'],
 
@@ -77,6 +90,7 @@ export default {
             loading: true,
         }
     },
+
     methods: {
         setInitialValue() {
             this.retrieveData();

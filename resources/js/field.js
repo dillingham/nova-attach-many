@@ -1,3 +1,5 @@
-Nova.booting((Vue, router, store) => {
-    Vue.component('form-nova-attach-many', require('./components/FormField.vue').default)
+import FormField from "./components/FormField"
+
+Nova.booting((app, store) => {
+    app.component('form-nova-attach-many', FormField)
 })
