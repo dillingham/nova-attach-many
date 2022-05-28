@@ -5,6 +5,7 @@ namespace NovaAttachMany\Providers;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use NovaAttachMany\Http\Middleware\Authorize;
 
