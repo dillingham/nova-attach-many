@@ -3,18 +3,21 @@
 
 namespace NovaAttachMany;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Authorizable;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
+use Laravel\Nova\Fields\ResourceRelationshipGuesser;
 use Laravel\Nova\Fields\Searchable;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Util;
 use NovaAttachMany\Rules\ArrayRules;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Fields\ResourceRelationshipGuesser;
-use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 
+/**
+ * @method static static make(mixed $name, string|\Closure|callable|object|null $attribute = null, class-string<\Laravel\Nova\Resource>|null $resolveCallback = null)
+ */
 class AttachMany extends Field
 {
     use Authorizable,
