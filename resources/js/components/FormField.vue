@@ -1,7 +1,7 @@
 <template>
     <DefaultField :field="currentField" :full-width-content="currentField.fullWidth" :show-help-text="false">
         <template #field :class="{'border-danger border': hasErrors}">
-            <div class="attach-many-container" :class="{'border-danger border': hasErrors}">
+            <div class="nova-attach-many" :class="{'border-danger border': hasErrors}">
                 <div v-if="currentField.showToolbar" class="flex items-center border border-b-0 border-gray-100 dark:border-gray-700">
                     <div v-if="preview" class="flex justify-center p-3 w-full">
                         <div class="text-xl">{{ __('Selected Items') }} ({{ selected.length  }})</div>

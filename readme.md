@@ -10,7 +10,7 @@ Belongs To Many create & edit form UI for Nova. Enables attaching relationships 
 ### Installation
 
 ```bash
-composer require dillingham/nova-attach-many
+composer require letsgoi/nova-attach-many
 ```
 
 ### Usage
@@ -112,6 +112,18 @@ This field also respects policies: ie Role / Permission
 - PermissionPolicy: viewAny($user)
 
 ---
+
+# Development
+Install dependencies:
+```bash
+docker compose run node npm install
+docker compose run composer install
+docker compose run node npm run nova:install
+```
+Compile assets for production:
+```bash
+docker compose run node npm run production
+```
 
 # Author
 
