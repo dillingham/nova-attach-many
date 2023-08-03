@@ -1,0 +1,14 @@
+version: '3'
+services:
+    node:
+        image: node:20-alpine
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www:cached
+    composer:
+        image: composer
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www:cached
+            - ~/.ssh:/root/.ssh:cached
+            - ~/.composer:/root/.composer:delegated
