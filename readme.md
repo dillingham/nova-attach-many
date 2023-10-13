@@ -70,7 +70,7 @@ Here are a few customization options
 - `->height('500px')` Set custom height
 - `->fullWidth()` Set to full width
 - `->showRefresh()` Request the resources again
-- `->showSubtitle()` Show the resource's subtitle
+- `->withSubtitles()` Show the resource's subtitle
 - `->help('<b>Tip:</b> help text')` Set the help text
 
 ### All Options Demo
