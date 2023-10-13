@@ -1,5 +1,5 @@
 <template>
-    <DefaultField :field="currentField" :full-width-content="currentField.fullWidth" :show-help-text="false">
+    <DefaultField :field="currentField" :full-width-content="currentField.fullWidth" :show-help-text="false" class="nova-attach-many">
         <template #field :class="{'border-danger border': hasErrors}">
             <div class="attach-many-container" :class="{'border-danger border': hasErrors}">
                 <div v-if="currentField.showToolbar" class="flex items-center border border-b-0 border-gray-100 dark:border-gray-700">
